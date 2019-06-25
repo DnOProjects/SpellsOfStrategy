@@ -159,7 +159,7 @@ function drawArrow(start,stop,resolution,deviation,size)
 		local normal = tangent:getNormal()
 	--go [10] pixels either way along that line to find 2 other points
 		local p2 = point:add(normal)
-		local p3 = point:take(normal)
+		local p3 = point:take(normal) --test
 	--points: p1, p2 and p3
 		local p1 = stop
 
