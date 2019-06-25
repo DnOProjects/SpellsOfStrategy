@@ -155,7 +155,7 @@ function drawArrow(start,stop,resolution,deviation,size)
 	--find the normal line at that point
 		local temp = #points-(numPointsBack*2)
 		local point = Vector(points[temp-1],points[temp])
-		local tangent = stop:take(point):abs()
+		local tangent = point:take(stop)
 		local normal = tangent:getNormal()
 	--go [10] pixels either way along that line to find 2 other points
 		local p2 = point:add(normal)
