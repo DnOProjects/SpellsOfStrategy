@@ -6,6 +6,12 @@ local Characters = require "characters"
 
 local UI = {deckHeight=60}
 
+function UI.load()
+	love.window.setFullscreen(true)
+	local font = love.graphics.newFont("assets/fonts/Roboto-Regular.ttf", 48)
+	love.graphics.setFont(font)
+end
+
 function UI.drawDeck(deck)
 	--TODO:
 	--Card name becomes smaller as more cards are added

@@ -14,13 +14,11 @@ turnNum = 1
 local updateNum = 0 --is 0 when not updating
 local animTimer = 0
 
-local font = love.graphics.newFont("assets/fonts/Roboto-Regular.ttf", 48)
-
 function love.load()
+	UI.load()
 	Characters.load()
 	Board.load()
-	love.window.setFullscreen(true)
-	love.graphics.setFont(font)
+
 	arrow = UI.arrow(Vector(0,100),Vector(100,100),100,10,30,40)
 end
 
