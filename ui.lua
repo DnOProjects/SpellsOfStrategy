@@ -67,7 +67,7 @@ UI.arrow = Class:derive("UI_arrow")
 		local a,b,c = quadratic.a, quadratic.b, quadratic.c
 
 		for i=1,self.resolution do --sample points spaced along the line
-			local x = self.start[1]+(((self.stop[1]-self.start[1])/self.resolution)*i)
+			local x = self.start[1]+(((self.stop[1]-self.start[1]-self.size)/self.resolution)*i)
 			local y = a*x^2 + b*x + c
 			self.points[#self.points+1] = x
 			self.points[#self.points+1] = y
