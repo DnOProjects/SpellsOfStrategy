@@ -39,8 +39,7 @@ function Vector:getLength()
 end
 
 function Vector:normalise()
-	local d = math.sqrt(self[1]^2,self[2]^2)
-	assert(d>0)
+	local d = math.sqrt(self[1]^2+self[2]^2)
 	return Vector(self[1]/d,self[2]/d)
 end
 

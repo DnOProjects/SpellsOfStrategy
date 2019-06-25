@@ -151,11 +151,12 @@ function drawArrow(start,stop,resolution,deviation,size)
 	--go [20] pixels back along line
 		local headSize = 20
 		--find number of points back to go combining resolution, headSize and distance (arrowLength)
-		local numPointsBack = math.floor(headSize/(distance/resolution))
+		--local numPointsBack = math.floor(headSize/(distance/resolution))
 	--find the normal line at that point
-		local temp = #points-(numPointsBack*2)
-		local point = Vector(points[temp-1],points[temp])
-		local tangent = point:take(stop)
+		--local temp = #points-(numPointsBack*2)
+		local point = Vector(points[#points-3],points[#points-2])
+		local tangent = point:take(stop):normalise():scale(30)
+		local point = point:add(tangent)
 		local normal = tangent:getNormal()
 	--go [10] pixels either way along that line to find 2 other points
 		local p2 = point:add(normal)
