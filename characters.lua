@@ -30,6 +30,7 @@ local Characters = {}
 		for i=1,8 do
 			Characters[1]:addCardToDeck("fireball")
 		end
+		Characters.test=12
 	end
 
 	function Characters.draw()
