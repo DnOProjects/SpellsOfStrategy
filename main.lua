@@ -34,8 +34,6 @@ function love.draw()
 	arrow:draw()
 end
 
-local mouseWasUp = true
-
 function love.update(dt)
 	local mx,my = love.mouse.getX(), love.mouse.getY()
 
