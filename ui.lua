@@ -2,6 +2,7 @@ local Class = require "class"
 local Vector = require "vector"
 local Utility = require "utility"
 local Ease = require "ease"
+local Characters = require "characters"
 
 local UI = {deckHeight=60}
 
@@ -23,10 +24,10 @@ end
 
 function UI.update(dt)
 	local mx,my = love.mouse.getX(), love.mouse.getY()
-	local cardWidth = love.graphics.getWidth()/#characters[turnNum].deck
+	local cardWidth = love.graphics.getWidth()/#Characters[turnNum].deck
 	local cardNum = math.floor(mx/cardWidth)+1
-	for i=1,#characters[turnNum].deck do
-		local card = characters[turnNum].deck[i]
+	for i=1,#Characters[turnNum].deck do
+		local card = Characters[turnNum].deck[i]
 		local cardTop = love.graphics.getHeight()-UI.deckHeight
 		if card.popupLevel>0 then cardTop = cardTop - card.fullHeight end
 		if i==(cardNum) and (my>=cardTop) then

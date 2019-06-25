@@ -1,6 +1,6 @@
 local Vector = require "vector"
 local Board = require "board"
-local character = require "character"
+local Characters = require "characters"
 local Cards = require "cards"
 local Class = require "class"
 local UI = require "ui"
@@ -16,7 +16,7 @@ local animTimer = 0
 local font = love.graphics.newFont("assets/fonts/Roboto-Regular.ttf", 48)
 
 function love.load()
-	character.load()
+	Characters.load()
 	Board.load()
 	love.window.setFullscreen(true)
 	love.graphics.setFont(font)
@@ -25,9 +25,9 @@ end
 
 function love.draw()
 	Board.draw()
-	character.draw()
+	Characters.draw()
 	--UI stuff:
-	UI.drawDeck(characters[turnNum].deck)
+	UI.drawDeck(Characters[turnNum].deck)
 	arrow.stop=getMouseCoords()
 	arrow:update()
 	arrow:draw()
@@ -41,17 +41,17 @@ function love.update(dt)
 	if love.mouse.isDown(1) then
 		if mouseWasUp then
 			local mapCoords = screenToMap(getMouseCoords())
-			if mapCoords:matches(characters[turnNum].pos) then
-				characters[turnNum].beingDragged = true
+			if mapCoords:matches(Characters[turnNum].pos) then
+				Characters[turnNum].beingDragged = true
 			end
 		end
 		mouseWasUp = false
 	else
 		if not mouseWasUp then
 			local dest = screenToMap(getMouseCoords())
-			if characters[turnNum].beingDragged and dest:distance(characters[turnNum].pos)==1 and isInBounds(dest) then
-				characters[turnNum].pos = screenToMap(getMouseCoords())
-				characters[turnNum].beingDragged = false
+			if Characters[turnNum].beingDragged and dest:distance(Characters[turnNum].pos)==1 and isInBounds(dest) then
+				Characters[turnNum].pos = screenToMap(getMouseCoords())
+				Characters[turnNum].beingDragged = false
 			end
 		end
 		mouseWasUp = true
