@@ -3,11 +3,13 @@ local Vector = require "vector"
 local Utility = require "utility"
 local Ease = require "ease"
 local Characters = require "characters"
+local Assets = require "assets"
 
 local UI = {deckHeight=60}
 
 function UI.load()
 	love.window.setFullscreen(true)
+	love.graphics.setDefaultFilter("nearest","nearest",10)
 	local font = love.graphics.newFont("assets/fonts/Roboto-Regular.ttf", 48)
 	love.graphics.setFont(font)
 end
@@ -25,6 +27,8 @@ function UI.drawDeck(deck)
 		local height = Ease.inExpo(card.popupLevel,UI.deckHeight,card.fullHeight,1)
 		love.graphics.rectangle("line",x,y,cardWidth,height)
 		love.graphics.printf(card.name,x,y,cardWidth,"center")
+		love.graphics.draw(Assets.getImage("chiSticker"),x+8,y+13)
+		love.graphics.print(card.chiCost,x+17,y+15,0,0.5,0.5)
 	end
 end
 
