@@ -4,6 +4,7 @@ local character = require "character"
 local Cards = require "cards"
 local Class = require "class"
 local UI = require "ui"
+local Input = require "input"
 
 local entities = {}
 local ui = {}
@@ -36,48 +37,6 @@ end
 local mouseWasUp = true
 
 function love.update(dt)
-	local mx,my = love.mouse.getX(), love.mouse.getY()
-
-	if love.mouse.isDown(1) then
-		if mouseWasUp then
-			local mapCoords = screenToMap(getMouseCoords())
-			if mapCoords:matches(characters[turnNum].pos) then
-				characters[turnNum].beingDragged = true
-			end
-		end
-		mouseWasUp = false
-	else
-		if not mouseWasUp then
-			local dest = screenToMap(getMouseCoords())
-			if characters[turnNum].beingDragged and dest:distance(characters[turnNum].pos)==1 and isInBounds(dest) then
-				characters[turnNum].pos = screenToMap(getMouseCoords())
-				characters[turnNum].beingDragged = false
-			end
-		end
-		mouseWasUp = true
-	end
-
+	Input.update()
 	UI.update(dt)
-
-end
-
-function getMouseCoords()
-	return Vector(love.mouse.getX(),love.mouse.getY())
-end
-
-function screenToMap(point)
-	return Vector(math.floor(point[1]/board.tileSize),math.floor(point[2]/board.tileSize))
-end
-
-function isInBounds(point) 
-	if point[1]>0 and point[1]<=board.size[1] and point[2]>0 and point[2]<=board.size[2] then
-		return true
-	end
-	return false
-end
-
-function makeMove(characterNum,moveData)
-	if characterNum==turnNum then
-
-	end
 end
