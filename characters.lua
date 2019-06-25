@@ -7,14 +7,30 @@ local Character = Class:derive("Character")
 
 	function Character:new(x,y)
 		self.pos=Vector(x,y)
+		self.visualPos=Vector(x,y)
 		self.health=100
 		self.chi=0
 		self.beingDragged=false
 		self.deck={}
+		self.size=1
 	end
 
 	function Character:draw()
-		love.graphics.circle("fill",(self.pos[1]+0.5)*board.tileSize,(self.pos[2]+0.5)*board.tileSize,board.tileSize/2)
+		if self.beingDragged==false then
+			love.graphics.circle("fill",(self.visualPos[1]+0.5)*board.tileSize,(self.visualPos[2]+0.5)*board.tileSize,self.size*(board.tileSize/2))
+		else
+			love.graphics.circle("fill",(self.visualPos[1]+0.5),(self.visualPos[2]+0.5),self.size*(board.tileSize/2))
+		end
+	end
+
+	function Character:ifDragged()
+		if self.beingDragged==true then
+			self.size=1.5
+			self.visualPos=Utility.getMouseCoords()
+		else
+			self.size=1
+			self.visualPos=self.pos
+		end
 	end
 
 	function Character:addCardToDeck(cardName)
@@ -39,5 +55,10 @@ local Characters = {}
 		end
 	end
 
+	function Characters.update()
+		for i=1,#Characters do
+			Characters[i]:ifDragged()
+		end
+	end
 
 return Characters

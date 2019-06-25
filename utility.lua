@@ -1,3 +1,5 @@
+local Vector = require "vector"
+
 local Utility = {}
 
 function Utility.round(x,decimalPlaces)
@@ -31,5 +33,10 @@ function Utility.getQuadratic(d,e,f)
 
 	return {a=a,b=b,c=c}
 end
+
+function Utility.getMouseCoords()
+	return Vector(love.mouse.getX(),love.mouse.getY())
+end
+
 
 return Utility

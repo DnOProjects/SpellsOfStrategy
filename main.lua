@@ -5,6 +5,7 @@ local Cards = require "cards"
 local Class = require "class"
 local UI = require "ui"
 local Input = require "input"
+local Utility = require "utility"
 
 local entities = {}
 local ui = {}
@@ -18,7 +19,6 @@ function love.load()
 	UI.load()
 	Characters.load()
 	Board.load()
-
 	arrow = UI.arrow(Vector(0,100),Vector(100,100),100,10,30,40)
 end
 
@@ -27,7 +27,7 @@ function love.draw()
 	Characters.draw()
 	--UI stuff:
 	UI.drawDeck(Characters[turnNum].deck)
-	arrow.stop=getMouseCoords()
+	arrow.stop=Utility.getMouseCoords()
 	arrow:update()
 	arrow:draw()
 end
@@ -35,4 +35,5 @@ end
 function love.update(dt)
 	Input.update()
 	UI.update(dt)
+	Characters.update()
 end
