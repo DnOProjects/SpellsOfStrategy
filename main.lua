@@ -4,6 +4,7 @@ local Characters = require "characters"
 local Cards = require "cards"
 local Class = require "class"
 local UI = require "ui"
+local Input = require "input"
 
 local entities = {}
 local ui = {}
@@ -57,27 +58,6 @@ function love.update(dt)
 		mouseWasUp = true
 	end
 
+	Input.update()
 	UI.update(dt)
-
-end
-
-function getMouseCoords()
-	return Vector(love.mouse.getX(),love.mouse.getY())
-end
-
-function screenToMap(point)
-	return Vector(math.floor(point[1]/board.tileSize),math.floor(point[2]/board.tileSize))
-end
-
-function isInBounds(point) 
-	if point[1]>0 and point[1]<=board.size[1] and point[2]>0 and point[2]<=board.size[2] then
-		return true
-	end
-	return false
-end
-
-function makeMove(characterNum,moveData)
-	if characterNum==turnNum then
-
-	end
 end
