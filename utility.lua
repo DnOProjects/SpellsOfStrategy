@@ -16,4 +16,20 @@ function Utility.findByTag(list,tagName,tagContent) --leave tag content blank to
 	end
 end
 
+function Utility.getQuadratic(d,e,f)
+	--Inputs points d,e and f
+	--Returns values a,b and c of quadratic formula
+	local ma1 = (d[1]-e[1]) / ((e[1]^2)-(d[1]^2))
+	local ca1 = (e[2]-d[2]) / ((e[1]^2)-(d[1]^2))
+
+	local ma2 = (e[1]-f[1]) / ((f[1]^2)-(e[1]^2))
+	local ca2 = (f[2]-e[2]) / ((f[1]^2)-(e[1]^2))
+
+	local b = (ca2-ca1) / (ma1-ma2)
+	local a = ma1*b + ca1
+	local c = d[2]-a*d[1]^2-b*d[1]
+
+	return {a=a,b=b,c=c}
+end
+
 return Utility
