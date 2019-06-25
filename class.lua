@@ -15,7 +15,7 @@ function Class:derive(type) --To make a new sub-class (	fruit = Class:derive("Fr
 end
 
 function Class:__call(...) --To make an object of a class (apple1 = Apple(); apple2 = Apple())  								
-    local inst = setmetatable({}, self)--IMPORTANT: these objects cannot be derived from - only classes
+    local inst = setmetatable({}, self) --IMPORTANT: these objects cannot be derived from - only classes
     inst:new(...)
     return inst
 end
