@@ -35,5 +35,5 @@ end
 function love.update(dt)
 	Input.update()
 	UI.update(dt)
-	Characters.update()
+	Characters.update(dt)
 end

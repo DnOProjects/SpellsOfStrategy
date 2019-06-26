@@ -1,4 +1,5 @@
 local Vector = require "vector"
+local Board = require "board"
 
 local Utility = {}
 
@@ -36,6 +37,15 @@ end
 
 function Utility.getMouseCoords()
 	return Vector(love.mouse.getX(),love.mouse.getY())
+end
+
+function Utility.getNeighbours(position)
+	local neighbours = {}
+	neighbours[1] = position:add(Vector(1,0))
+	neighbours[2] = position:add(Vector(-1,0))
+	neighbours[3] = position:add(Vector(0,1))
+	neighbours[4] = position:add(Vector(0,-1))
+	return neighbours
 end
 
 

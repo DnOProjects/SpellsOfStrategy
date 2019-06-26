@@ -33,6 +33,13 @@ local sqrt = math.sqrt
 local abs = math.abs
 local asin  = math.asin
 
+function Ease.stepTimer(t,amount,dt) --amount = change/second
+  t=t+amount*dt
+  if t>1 then t=1 end
+  if t<0 then t=0 end
+  return t
+end
+
 function Ease.linear(t, b, c, d)
   return c * t / d + b
 end

@@ -1,36 +1,59 @@
 local Class = require "class"
+local Board = require "board"
 local Vector = require "vector"
 local Utility = require "utility"
 local Cards = require "cards"
+local Ease = require "ease"
 
 local Character = Class:derive("Character")
 
 	function Character:new(x,y)
-		self.pos=Vector(x,y)
-		self.visualPos=Vector(x,y)
+		--Stats
 		self.health=100
 		self.chi=0
-		self.beingDragged=false
 		self.deck={}
+
+		--Position
+		self.pos=Vector(x,y)
+		self.visualPos=Vector(x,y)
+
+		--Size
 		self.size=1
+		self.defealtSize=1
+
+		--Dragging
+		self.beingDragged=false
+		self.draggingSize=1.5
+		self.growTimer=0
+		self.pickupSpeed=2
 	end
 
 	function Character:draw()
 		if self.beingDragged==false then
 			love.graphics.circle("fill",(self.visualPos[1]+0.5)*board.tileSize,(self.visualPos[2]+0.5)*board.tileSize,self.size*(board.tileSize/2))
 		else
+			local neighbours = Utility.getNeighbours(self.pos)
+			for i=1,#neighbours do
+				if Board.isInBounds(neighbours[i]) then
+					Board.drawHighlight(neighbours[i],"green")
+				end
+			end
+			love.graphics.setColor(1,1,1,0.3)
+			love.graphics.circle("fill",(self.pos[1]+0.5)*board.tileSize,(self.pos[2]+0.5)*board.tileSize,self.defealtSize*(board.tileSize/2))
+			love.graphics.setColor(1,1,1,1)
 			love.graphics.circle("fill",(self.visualPos[1]+0.5),(self.visualPos[2]+0.5),self.size*(board.tileSize/2))
 		end
 	end
 
-	function Character:ifDragged()
+	function Character:updateDragging(dt)
 		if self.beingDragged==true then
-			self.size=1.5
+			self.growTimer=Ease.stepTimer(self.growTimer,self.pickupSpeed,dt)
 			self.visualPos=Utility.getMouseCoords()
 		else
-			self.size=1
+			self.growTimer=Ease.stepTimer(self.growTimer,-self.pickupSpeed,dt)
 			self.visualPos=self.pos
 		end
+		self.size = Ease.inCirc(self.growTimer,self.defealtSize,self.draggingSize-self.defealtSize,1)
 	end
 
 	function Character:addCardToDeck(cardName)
@@ -55,9 +78,9 @@ local Characters = {}
 		end
 	end
 
-	function Characters.update()
+	function Characters.update(dt)
 		for i=1,#Characters do
-			Characters[i]:ifDragged()
+			Characters[i]:updateDragging(dt)
 		end
 	end
 

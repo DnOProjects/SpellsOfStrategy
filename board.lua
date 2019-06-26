@@ -16,11 +16,17 @@ function Board.draw()
 	end
 end
 
-function screenToMap(point)
+function Board.drawHighlight(position,color)
+	if color=="green" then love.graphics.setColor(0,1,0) end
+	love.graphics.rectangle("line",position[1]*board.tileSize+5,position[2]*board.tileSize+5,board.tileSize-10,board.tileSize-10)
+	love.graphics.setColor(1,1,1)
+end
+
+function Board.screenToMap(point)
 	return Vector(math.floor(point[1]/board.tileSize),math.floor(point[2]/board.tileSize))
 end
 
-function isInBounds(point) 
+function Board.isInBounds(point) 
 	if point[1]>0 and point[1]<=board.size[1] and point[2]>0 and point[2]<=board.size[2] then
 		return true
 	end

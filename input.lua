@@ -1,6 +1,7 @@
 local Vector = require "vector"
 local Characters = require "characters"
 local Utility = require "utility"
+local Board = require "board"
 
 local Input = {}
 
@@ -8,22 +9,16 @@ function Input.update()
 	local mx,my = love.mouse.getX(), love.mouse.getY()
 
 	if love.mouse.isDown(1) then
-		if mouseWasUp then
-			local mapCoords = screenToMap(Utility.getMouseCoords())
-			if mapCoords:matches(Characters[turnNum].pos) then
-				Characters[turnNum].beingDragged = true
-			end
+		local mapCoords = Board.screenToMap(Utility.getMouseCoords())
+		if mapCoords:matches(Characters[turnNum].pos) then
+			Characters[turnNum].beingDragged = true
 		end
-		mouseWasUp = false
 	else
-		if not mouseWasUp then
-			local dest = screenToMap(Utility.getMouseCoords())
-			if Characters[turnNum].beingDragged and dest:distance(Characters[turnNum].pos)==1 and isInBounds(dest) then
-				Characters[turnNum].pos = screenToMap(Utility.getMouseCoords())
-				Characters[turnNum].beingDragged = false
-			end
+		local dest = Board.screenToMap(Utility.getMouseCoords())
+		if Characters[turnNum].beingDragged and dest:distance(Characters[turnNum].pos)==1 and Board.isInBounds(dest) then
+			Characters[turnNum].pos = Board.screenToMap(Utility.getMouseCoords())			
 		end
-		mouseWasUp = true
+		Characters[turnNum].beingDragged = false
 	end
 end
 
