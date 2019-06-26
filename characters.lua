@@ -8,6 +8,8 @@ local Ease = require "ease"
 local Character = Class:derive("Character")
 
 	function Character:new(x,y)
+		self.growTimer=0
+
 		--Stats
 		self.health=100
 		self.chi=0
@@ -24,7 +26,6 @@ local Character = Class:derive("Character")
 		--Dragging
 		self.beingDragged=false
 		self.draggingSize=1.5
-		self.growTimer=0
 		self.pickupSpeed=2
 	end
 
