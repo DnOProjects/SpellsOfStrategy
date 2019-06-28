@@ -12,6 +12,14 @@ function UI.load()
 	love.graphics.setDefaultFilter("nearest","nearest",10)
 	local font = love.graphics.newFont("assets/fonts/Roboto-Regular.ttf", 48)
 	love.graphics.setFont(font)
+	arrow = UI.arrow(Vector(0,100),Vector(100,100),100,10,30,40)
+end
+
+function UI.draw()
+	UI.drawDeck(Characters[turnNum].deck)
+	arrow.stop=Utility.getMouseCoords()
+	arrow:update()
+	arrow:draw()
 end
 
 function UI.drawDeck(deck)
