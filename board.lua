@@ -26,6 +26,15 @@ function Board.screenToMap(point)
 	return Vector(math.floor(point[1]/board.tileSize),math.floor(point[2]/board.tileSize))
 end
 
+function Board.mapToScreen(point,center)
+	local center = center or false
+	local point = Vector(point[1]*board.tileSize,point[2]*board.tileSize)
+	if center then
+		point = point:add(Vector(board.tileSize,board.tileSize):scale(0.5))
+	end
+	return point
+end
+
 function Board.isInBounds(point) 
 	if point[1]>0 and point[1]<=board.size[1] and point[2]>0 and point[2]<=board.size[2] then
 		return true

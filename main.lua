@@ -6,6 +6,7 @@ local Class = require "class"
 local UI = require "ui"
 local Input = require "input"
 local Utility = require "utility"
+local Entities = require "entities"
 
 local entities = {}
 local ui = {}
@@ -25,6 +26,7 @@ function love.draw()
 	Board.draw()
 	Characters.draw()
 	UI.draw()
+	Entities.drawGhost("fireball",200,200)
 end
 
 function love.update(dt)

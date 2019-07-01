@@ -24,6 +24,10 @@ function Vector:matches(vector)
 	return false
 end
 
+function Vector:unpack()
+	return self[1],self[2]
+end
+
 function Vector:distance(vector)--takes 2 points
 	local xDist = math.abs(vector[1]-self[1])
 	local yDist = math.abs(vector[2]-self[2])

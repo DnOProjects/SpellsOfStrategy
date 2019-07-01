@@ -3,6 +3,13 @@ local Board = require "board"
 
 local Utility = {}
 
+function Utility.index(list,index) --input: list={a={b={c="cat"}}}; index = "a.b.c" --> output: "cat"
+	for sub in string.gmatch(index,'([^.]+)') do
+    	list=list[sub]
+	end
+	return list
+end
+
 function Utility.round(x,decimalPlaces)
   local mult = 10^(decimalPlaces or 0) --decimalPlaces default to 0
   return math.floor(x * mult + 0.5) / mult

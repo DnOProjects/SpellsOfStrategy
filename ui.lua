@@ -4,6 +4,7 @@ local Utility = require "utility"
 local Ease = require "ease"
 local Characters = require "characters"
 local Assets = require "assets"
+local Board = require "board"
 
 local UI = {deckHeight=60}
 
@@ -12,14 +13,21 @@ function UI.load()
 	love.graphics.setDefaultFilter("nearest","nearest",10)
 	local font = love.graphics.newFont("assets/fonts/Roboto-Regular.ttf", 48)
 	love.graphics.setFont(font)
-	arrow = UI.arrow(Vector(0,100),Vector(100,100),100,10,30,40)
 end
 
 function UI.draw()
 	UI.drawDeck(Characters[turnNum].deck)
-	arrow.stop=Utility.getMouseCoords()
-	arrow:update()
-	arrow:draw()
+	UI.drawCastingUI()
+end
+
+function UI.drawCastingUI()
+	local card = Utility.findByTag(Characters[turnNum].deck,"casting",true)
+	if card~=nil then
+		if card.castInputType == "shoot" then
+			local x,y = Board.mapToScreen(Characters[turnNum].pos,true):unpack()
+			love.graphics.line(x,y,love.mouse.getX(),love.mouse.getY())
+		end
+	end
 end
 
 function UI.drawDeck(deck)
@@ -30,10 +38,14 @@ function UI.drawDeck(deck)
 	if #deck < 5 then cardWidth = love.graphics.getWidth()/5 end
 	for i=1,#deck do
 		local card = deck[i]
+		if card.casting then 
+			love.graphics.setColor(0.760, 0.560, 0) 
+		end 
 		local x = (i-1)*cardWidth
 		local y = Ease.outQuad(card.popupLevel,love.graphics.getHeight()-UI.deckHeight,-card.fullHeight,1)
 		local height = Ease.inExpo(card.popupLevel,UI.deckHeight,card.fullHeight,1)
 		love.graphics.rectangle("line",x,y,cardWidth,height)
+		love.graphics.setColor(1,1,1)
 		love.graphics.printf(card.name,x,y,cardWidth,"center")
 		love.graphics.draw(Assets.getImage("chiSticker"),x+8,y+13)
 		love.graphics.print(card.chiCost,x+17,y+15,0,0.5,0.5)
@@ -50,6 +62,9 @@ function UI.update(dt)
 		if card.popupLevel>0 then cardTop = cardTop - card.fullHeight end
 		if i==(cardNum) and (my>=cardTop) then
 			card.popupLevel = card.popupLevel + (dt*3)
+			if love.mouse.isDown(1) then 
+				Characters[turnNum].deck[i].casting = true --Start casting spell
+			end
 		else
 			card.popupLevel = card.popupLevel - (dt*3)
 		end

@@ -14,6 +14,7 @@ function Card:derive(values)
     cls.name = values.name or "Untitled"
     cls.chiCost = values.chiCost or 5
     cls.fullHeight = values.fullHeight or 400
+    cls.castInputType = values.castInputType or "shoot"
 
     return cls
 end
