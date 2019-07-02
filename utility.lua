@@ -1,5 +1,4 @@
 local Vector = require "vector"
-local Board = require "board"
 
 local Utility = {}
 
@@ -40,10 +39,6 @@ function Utility.getQuadratic(d,e,f)
 	local c = d[2]-a*d[1]^2-b*d[1]
 
 	return {a=a,b=b,c=c}
-end
-
-function Utility.getMouseCoords()
-	return Vector(love.mouse.getX(),love.mouse.getY())
 end
 
 function Utility.getNeighbours(position)

@@ -16,9 +16,7 @@ function Entity:derive(values)
 
     --Default values:
         cls.name = values.name or "Untitled"
-        cls.sprite = Sprite("entities.fireball",64,64,8,20) or values.sprite
-        cls.sprite:addAnimation("normal","loop")
-        cls.sprite:setAnimation("normal")
+        cls.sprite = Sprite("entities.fireball",100,100,8,20) or values.sprite
 
         --Optional, modular proporties
         cls.movesInSteps = values.movesInSteps or false --travels by a certain amount in its set direction every time it updates
@@ -29,11 +27,12 @@ end
 -------------------------
 local Entities = {}
 
-function Entities.drawGhost(name,x,y)
+function Entities.drawGhost(name,pos)
     love.graphics.setColor(1,1,1,0.5)
     local sprite = Entities[name].sprite
-    sprite:update(0.1)
-    love.graphics.draw(Utility.index(Images,sprite.imageName).image,sprite.frame,x,y,0,4,4)
+    local x,y = Board.mapToScreen(pos):unpack()
+    love.graphics.draw(Utility.index(Images,sprite.imageName).image,sprite.frame,x,y)
+    love.graphics.setColor(1,1,1)
 end
 
 Entities.fireball = Entity:derive({name="fireball",movesInSteps={speed=3}})

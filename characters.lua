@@ -1,9 +1,8 @@
 local Class = require "class"
-local Board = require "board"
 local Vector = require "vector"
 local Utility = require "utility"
-local Cards = require "cards"
 local Ease = require "ease"
+local Input = require "input"
 
 local Character = Class:derive("Character")
 
@@ -49,7 +48,7 @@ local Character = Class:derive("Character")
 	function Character:updateDragging(dt)
 		if self.beingDragged==true then
 			self.growTimer=Ease.stepTimer(self.growTimer,self.pickupSpeed,dt)
-			self.visualPos=Utility.getMouseCoords()
+			self.visualPos=Input.getMouseCoords()
 		else
 			self.growTimer=Ease.stepTimer(self.growTimer,-self.pickupSpeed,dt)
 			self.visualPos=self.pos

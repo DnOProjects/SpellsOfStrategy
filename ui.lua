@@ -1,10 +1,8 @@
 local Class = require "class"
-local Vector = require "vector"
-local Utility = require "utility"
 local Ease = require "ease"
-local Characters = require "characters"
 local Assets = require "assets"
-local Board = require "board"
+local Utility = require "utility"
+local Input = require "input"
 
 local UI = {deckHeight=60}
 
@@ -24,8 +22,13 @@ function UI.drawCastingUI()
 	local card = Utility.findByTag(Characters[turnNum].deck,"casting",true)
 	if card~=nil then
 		if card.castInputType == "shoot" then
-			local x,y = Board.mapToScreen(Characters[turnNum].pos,true):unpack()
-			love.graphics.line(x,y,love.mouse.getX(),love.mouse.getY())
+			local shootingRangeCriteria = {Board.isInShootingRange,Board.isInBounds}
+			Board.drawHighlightsWhere(shootingRangeCriteria,"red")
+			local charPos = Characters[turnNum].pos
+			if Board.tileMeetsCriteria(Input.getSelectedTile(),shootingRangeCriteria) then
+				Entities.drawGhost("fireball",charPos:add(Input.getSelectedTile():take(charPos):normalise()))
+				Board.drawHighlight(Input.getSelectedTile(),"green")
+			end
 		end
 	end
 end
@@ -62,8 +65,9 @@ function UI.update(dt)
 		if card.popupLevel>0 then cardTop = cardTop - card.fullHeight end
 		if i==(cardNum) and (my>=cardTop) then
 			card.popupLevel = card.popupLevel + (dt*3)
-			if love.mouse.isDown(1) then 
+			if love.mouse.isDown(1) and turnState == "selectCard" then
 				Characters[turnNum].deck[i].casting = true --Start casting spell
+				turnState = "specifyCast"
 			end
 		else
 			card.popupLevel = card.popupLevel - (dt*3)
