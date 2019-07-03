@@ -1,6 +1,6 @@
 local Vector = require "vector"
 local Utility = require "utility"
-local Assets = require "assets"
+local Images = require "images"
 
 local Board = {}
 
@@ -13,8 +13,8 @@ end
 function Board.draw()
 	for x=1,board.size[1] do
 		for y=1,board.size[2] do
-			love.graphics.setColor(1,1,1)
-			love.graphics.draw(Assets.images.stoneBrick,x*board.tileSize,y*board.tileSize)
+			love.graphics.setColor(0.5,0.5,0.5)
+			love.graphics.draw(Images.tiles.stoneBrick.image,x*board.tileSize,y*board.tileSize)
 			love.graphics.setColor(1,1,1,0.3)
 			love.graphics.rectangle("line",x*board.tileSize,y*board.tileSize,board.tileSize,board.tileSize)
 			love.graphics.setColor(1,1,1)

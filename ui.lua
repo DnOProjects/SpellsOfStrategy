@@ -1,6 +1,6 @@
 local Class = require "class"
 local Ease = require "ease"
-local Assets = require "assets"
+local Images = require "images"
 local Utility = require "utility"
 local Input = require "input"
 
@@ -8,7 +8,6 @@ local UI = {deckHeight=60}
 
 function UI.load()
 	love.window.setFullscreen(true)
-	love.graphics.setDefaultFilter("nearest","nearest",10)
 	local font = love.graphics.newFont("assets/fonts/Roboto-Regular.ttf", 48)
 	love.graphics.setFont(font)
 end
@@ -50,7 +49,7 @@ function UI.drawDeck(deck)
 		love.graphics.rectangle("line",x,y,cardWidth,height)
 		love.graphics.setColor(1,1,1)
 		love.graphics.printf(card.name,x,y,cardWidth,"center")
-		love.graphics.draw(Assets.getImage("chiSticker"),x+8,y+13)
+		love.graphics.draw(Images.ui.chiSticker.image,x+8,y+13)
 		love.graphics.print(card.chiCost,x+17,y+15,0,0.5,0.5)
 	end
 end

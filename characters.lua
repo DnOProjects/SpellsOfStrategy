@@ -3,6 +3,7 @@ local Vector = require "vector"
 local Utility = require "utility"
 local Ease = require "ease"
 local Input = require "input"
+local Images = require "images"
 
 local Character = Class:derive("Character")
 
@@ -30,7 +31,7 @@ local Character = Class:derive("Character")
 
 	function Character:draw()
 		if self.beingDragged==false then
-			love.graphics.circle("fill",(self.visualPos[1]+0.5)*board.tileSize,(self.visualPos[2]+0.5)*board.tileSize,self.size*(board.tileSize/2))
+			love.graphics.draw(Images.player.image,self.pos[1]*board.tileSize,self.pos[2]*board.tileSize,0,self.size,self.size)
 		else
 			local neighbours = Utility.getNeighbours(self.pos)
 			for i=1,#neighbours do
@@ -39,16 +40,16 @@ local Character = Class:derive("Character")
 				end
 			end
 			love.graphics.setColor(1,1,1,0.3)
-			love.graphics.circle("fill",(self.pos[1]+0.5)*board.tileSize,(self.pos[2]+0.5)*board.tileSize,self.defealtSize*(board.tileSize/2))
+			love.graphics.draw(Images.player.image,self.pos[1]*board.tileSize,self.pos[2]*board.tileSize,0,self.defealtSize,self.defealtSize)
 			love.graphics.setColor(1,1,1,1)
-			love.graphics.circle("fill",(self.visualPos[1]+0.5),(self.visualPos[2]+0.5),self.size*(board.tileSize/2))
+			love.graphics.draw(Images.player.image,self.visualPos[1],self.visualPos[2],0,self.size,self.size)
 		end
 	end
 
 	function Character:updateDragging(dt)
 		if self.beingDragged==true then
 			self.growTimer=Ease.stepTimer(self.growTimer,self.pickupSpeed,dt)
-			self.visualPos=Input.getMouseCoords()
+			self.visualPos=Input.getMouseCoords():take(Vector(1,1):scale(board.tileSize*self.size*0.5))
 		else
 			self.growTimer=Ease.stepTimer(self.growTimer,-self.pickupSpeed,dt)
 			self.visualPos=self.pos
