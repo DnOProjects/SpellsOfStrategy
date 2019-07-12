@@ -53,21 +53,29 @@ function UI.drawDeck(deck)
 	end
 end
 
+
 function UI.update(dt)
-	local mx,my = love.mouse.getX(), love.mouse.getY()
-	local cardWidth = love.graphics.getWidth()/#Characters[turnNum].deck
-	local hoveredCardNum = math.floor(mx/cardWidth)+1
+	local deck =  Characters[turnNum].deck
+	local selectedCard = UI.getSelectedCard(deck)
+	if selectedCard~=nil then
+		selectedCard.popupLevel = selectedCard.popupLevel + (dt*3)
+	end
 	for i=1,#Characters[turnNum].deck do
-		local card = Characters[turnNum].deck[i]
-		local cardTop = love.graphics.getHeight()-UI.deckHeight
-		if card.popupLevel>0 then cardTop = cardTop - card.fullHeight end
-		if i==(hoveredCardNum) and (my>=cardTop) then
-			card.popupLevel = card.popupLevel + (dt*3)
-		else
+		local card = deck[i]
+		if card~=selectedCard then
 			card.popupLevel = card.popupLevel - (dt*3)
 		end
 		if card.popupLevel>1 then card.popupLevel=1 end
 		if card.popupLevel<0 then card.popupLevel=0 end
+	end
+end
+
+function UI.getSelectedCard(deck)
+	local cardWidth = love.graphics.getWidth()/#Characters[turnNum].deck
+	if #Characters[turnNum].deck < 5 then cardWidth = love.graphics.getWidth()/5 end
+	local cardIntersectingWithX = Characters[turnNum].deck[math.floor(love.mouse.getX()/cardWidth)+1]
+	if love.mouse.getY()>=cardIntersectingWithX:getTop() then
+		return cardIntersectingWithX
 	end
 end
 

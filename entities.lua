@@ -83,6 +83,8 @@ function Entities.update(dt)
             if entityUpdating > #Entities then
                 entityUpdating = 1
                 turnState = "move"
+                if turnNum == 1 then turnNum = 2
+                else turnNum = 1 end
                 return
             end
         end

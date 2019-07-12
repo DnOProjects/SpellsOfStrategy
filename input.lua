@@ -32,17 +32,11 @@ function love.mousepressed(x,y,button,istouch,presses)
 			Input.tileClicked(mapCoords)
 		end
 
-		local cardWidth = love.graphics.getWidth()/#Characters[turnNum].deck
-		local hoveredCardNum = math.floor(love.mouse.getX()/cardWidth)+1
-		for i=1,#Characters[turnNum].deck do
-			local card = Characters[turnNum].deck[i]
-			local cardTop = love.graphics.getHeight()-UI.deckHeight
-			if card.popupLevel>0 then cardTop = cardTop - card.fullHeight end
-			if (turnState == "selectCard" or turnState == "move") and i==(hoveredCardNum) and (love.mouse.getY()>=cardTop) then
-				Characters[turnNum].castingCard = Characters[turnNum].deck[i] --Start casting spell
-				Characters[turnNum].deck[i].toRemove = true
-				turnState = "specifyCast"
-			end
+		local selectedCard = UI.getSelectedCard(Characters[turnNum].deck)
+		if selectedCard~=nil and (turnState == "selectCard" or turnState == "move") then
+			Characters[turnNum].castingCard = selectedCard --Start casting spell
+			selectedCard.toRemove = true
+			turnState = "specifyCast"
 		end
 
 	end
