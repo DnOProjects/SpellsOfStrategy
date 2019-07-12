@@ -1,7 +1,6 @@
 local Class = require "class"
 local Ease = require "ease"
 local Images = require "images"
-local Utility = require "utility"
 local Input = require "input"
 
 local UI = {deckHeight=60}
@@ -14,19 +13,22 @@ end
 
 function UI.draw()
 	UI.drawDeck(Characters[turnNum].deck)
-	UI.drawCastingUI()
+	if turnState == "specifyCast" then
+		UI.drawCastingUI()
+	end
 end
 
 function UI.drawCastingUI()
-	local card = Utility.findByTag(Characters[turnNum].deck,"casting",true)
-	if card~=nil then
-		if card.castInputType == "shoot" then
+	local c = Characters[turnNum].castingCard
+	if c~=nil then
+		if c.castInputType == "shoot" then
 			local shootingRangeCriteria = {Board.isInShootingRange,Board.isInBounds}
 			Board.drawHighlightsWhere(shootingRangeCriteria,"red")
 			local charPos = Characters[turnNum].pos
-			if Board.tileMeetsCriteria(Input.getSelectedTile(),shootingRangeCriteria) then
-				Entities.drawGhost("fireball",charPos:add(Input.getSelectedTile():take(charPos):normalise()))
-				Board.drawHighlight(Input.getSelectedTile(),"green")
+			local selectedTile = Input.getSelectedTile()
+			if Board.tileMeetsCriteria(selectedTile,shootingRangeCriteria) then
+				Entities.drawGhost("fireball",charPos:add(selectedTile:take(charPos):normalise()))
+				Board.drawHighlight(selectedTile,"green")
 			end
 		end
 	end
@@ -40,9 +42,6 @@ function UI.drawDeck(deck)
 	if #deck < 5 then cardWidth = love.graphics.getWidth()/5 end
 	for i=1,#deck do
 		local card = deck[i]
-		if card.casting then 
-			love.graphics.setColor(0.760, 0.560, 0) 
-		end 
 		local x = (i-1)*cardWidth
 		local y = Ease.outQuad(card.popupLevel,love.graphics.getHeight()-UI.deckHeight,-card.fullHeight,1)
 		local height = Ease.inExpo(card.popupLevel,UI.deckHeight,card.fullHeight,1)
@@ -57,17 +56,13 @@ end
 function UI.update(dt)
 	local mx,my = love.mouse.getX(), love.mouse.getY()
 	local cardWidth = love.graphics.getWidth()/#Characters[turnNum].deck
-	local cardNum = math.floor(mx/cardWidth)+1
+	local hoveredCardNum = math.floor(mx/cardWidth)+1
 	for i=1,#Characters[turnNum].deck do
 		local card = Characters[turnNum].deck[i]
 		local cardTop = love.graphics.getHeight()-UI.deckHeight
 		if card.popupLevel>0 then cardTop = cardTop - card.fullHeight end
-		if i==(cardNum) and (my>=cardTop) then
+		if i==(hoveredCardNum) and (my>=cardTop) then
 			card.popupLevel = card.popupLevel + (dt*3)
-			if love.mouse.isDown(1) and turnState == "selectCard" then
-				Characters[turnNum].deck[i].casting = true --Start casting spell
-				turnState = "specifyCast"
-			end
 		else
 			card.popupLevel = card.popupLevel - (dt*3)
 		end

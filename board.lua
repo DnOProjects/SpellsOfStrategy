@@ -1,5 +1,4 @@
 local Vector = require "vector"
-local Utility = require "utility"
 local Images = require "images"
 
 local Board = {}

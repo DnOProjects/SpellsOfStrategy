@@ -1,6 +1,5 @@
 local Class = require "class"
 local Animation = require "animation"
-local Utility = require "utility"
 local Sprite = Class:derive("Sprite")
 local Images = require "images"
 

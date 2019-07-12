@@ -1,6 +1,5 @@
 local Class = require "class"
 local Vector = require "vector"
-local Utility = require "utility"
 local Ease = require "ease"
 local Input = require "input"
 local Images = require "images"
@@ -57,18 +56,31 @@ local Character = Class:derive("Character")
 		self.size = Ease.inCirc(self.growTimer,self.defealtSize,self.draggingSize-self.defealtSize,1)
 	end
 
+	function Character:updateDeck()
+		local d = self.deck
+		for i=#d,1,-1 do
+			if d[i].toRemove then
+				table.remove(d,i)
+			end
+		end
+	end
+
 	function Character:addCardToDeck(cardName)
-		local card = Utility.findByTag(Cards,"name",cardName)()
+		local card = Utility.findByTag(Cards,"name",cardName)
+		local newObject = card()
 		card.popupLevel = 0 --0=down; 1=up
-		self.deck[#self.deck+1] = card
+		self.deck[#self.deck+1] = newObject
 	end
 
 local Characters = {}
 
 	function Characters.load()
 		Characters[1]=Character(1,1)
-		for i=1,8 do
-			Characters[1]:addCardToDeck("fireball")
+		Characters[2]=Character(8,1)
+		for j=1,2 do
+			for i=1,8 do
+				Characters[j]:addCardToDeck("fireball")
+			end
 		end
 		Characters.test=12
 	end
@@ -81,7 +93,9 @@ local Characters = {}
 
 	function Characters.update(dt)
 		for i=1,#Characters do
-			Characters[i]:updateDragging(dt)
+			local c = Characters[i]
+			c:updateDragging(dt)
+			c:updateDeck()
 		end
 	end
 

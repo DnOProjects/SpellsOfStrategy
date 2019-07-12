@@ -1,19 +1,18 @@
-local UI = require "ui"
 local Input = require "input"
 
+Utility = require "utility"
 Board = require "board"
+UI = require "ui"
 Characters = require "characters"
 Cards = require "cards"
 Entities = require "entities"
+Vector = require "vector"
 
---local entities = {}
---local ui = {}
-
+--State variables
 macroState = "inGame"
-turnState = "selectCard"
-turnNum = 1
-local updateNum = 0 --is 0 when not updating
-local animTimer = 0
+turnState = "move"
+turnNum = 2
+entityUpdating = 1 --index
 
 function love.load()
 	UI.load()
@@ -23,6 +22,7 @@ end
 
 function love.draw()
 	Board.draw()
+	Entities.draw()
 	Characters.draw()
 	UI.draw()
 end
@@ -31,4 +31,5 @@ function love.update(dt)
 	Input.update()
 	UI.update(dt)
 	Characters.update(dt)
+	Entities.update(dt)
 end
